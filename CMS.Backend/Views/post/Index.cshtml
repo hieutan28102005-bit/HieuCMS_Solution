@@ -1,0 +1,138 @@
+﻿@model List<CMS.Data.Entities.Post>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Danh sách bài viết</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background-color: #f5f5f5;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+            .btn-add:hover {
+                background-color: #218838;
+            }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+            table th {
+                background-color: #007bff;
+                color: white;
+                padding: 12px;
+            }
+
+            table td {
+                padding: 12px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            table tr:hover {
+                background-color: #f1f1f1;
+            }
+
+        .btn-edit {
+            background-color: orange;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn-delete {
+            background-color: red;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn-edit:hover {
+            background-color: darkorange;
+        }
+
+        .btn-delete:hover {
+            background-color: darkred;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>DANH SÁCH BÀI VIẾT</h1>
+
+    <a class="btn-add" href="/Post/Create">
+        + Thêm bài viết
+    </a>
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Tiêu đề</th>
+            <th>Nội dung</th>
+            <th>Hình ảnh</th>
+            <th>Ngày tạo</th>
+            <th>Chức năng</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+
+                <td>@item.Title</td>
+
+                <td>@item.Content</td>
+
+                <td>@item.ImageUrl</td>
+
+                <td>
+                    @item.CreatedDate.ToString("dd/MM/yyyy")
+                </td>
+
+                <td>
+
+                    <a class="btn-edit"
+                       href="/Post/Edit/@item.Id">
+                        Sửa
+                    </a>
+
+                    <a class="btn-delete"
+                       href="/Post/Delete/@item.Id">
+                        Xóa
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+</body>
+</html>

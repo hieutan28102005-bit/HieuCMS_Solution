@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>CMS Dashboard</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #f5f5f5;
+        }
+
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+            background: #1e293b;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: 20px;
+        }
+
+            .sidebar h2 {
+                color: white;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .sidebar a {
+                display: block;
+                color: white;
+                padding: 15px 20px;
+                text-decoration: none;
+                transition: 0.3s;
+            }
+
+                .sidebar a:hover {
+                    background: #334155;
+                }
+
+        .main {
+            margin-left: 230px;
+            padding: 30px;
+        }
+
+        .title {
+            font-size: 32px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 220px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+            .card h3 {
+                margin: 0;
+                color: #555;
+            }
+
+            .card p {
+                font-size: 28px;
+                margin-top: 15px;
+                color: #007bff;
+                font-weight: bold;
+            }
+
+        .welcome {
+            background: white;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>CMS ADMIN</h2>
+
+        <a href="/Home">
+            Dashboard
+        </a>
+
+        <a href="/Post">
+            Quản lý bài viết
+        </a>
+
+        <a href="/User">
+            Quản lý thành viên
+        </a>
+
+        <a href="/Product">
+            Quản lý sản phẩm
+        </a>
+
+        <a href="/Customer">
+            Quản lý khách hàng
+        </a>
+
+        <a href="/Order">
+            Quản lý đơn hàng
+        </a>
+
+    </div>
+
+    <div class="main">
+
+        <div class="title">
+            HỆ THỐNG QUẢN TRỊ CMS
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Bài viết</h3>
+                <p>25</p>
+            </div>
+
+            <div class="card">
+                <h3>Thành viên</h3>
+                <p>12</p>
+            </div>
+
+            <div class="card">
+                <h3>Sản phẩm</h3>
+                <p>50</p>
+            </div>
+
+            <div class="card">
+                <h3>Đơn hàng</h3>
+                <p>18</p>
+            </div>
+
+        </div>
+
+        <div class="welcome">
+
+            <h2>Xin chào Nguyễn Tấn Hiệu 👋</h2>
+
+            <p>
+                Chào mừng bạn đến với hệ thống quản trị nội dung CMS.
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

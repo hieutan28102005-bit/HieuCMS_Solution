@@ -1,0 +1,181 @@
+﻿@model List<CMS.Data.Entities.User>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quản lý thành viên</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .btn-add {
+            background: green;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+            .btn-add:hover {
+                background: darkgreen;
+            }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        th {
+            background: #333;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f2f2f2;
+        }
+
+        .role-admin {
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .role-editor {
+            background: deepskyblue;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .role-author {
+            background: teal;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .btn-edit {
+            background: orange;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+            .btn-edit:hover {
+                background: darkorange;
+            }
+
+        .btn-delete {
+            background: red;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+            .btn-delete:hover {
+                background: darkred;
+            }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>QUẢN LÝ THÀNH VIÊN</h1>
+
+    <a class="btn-add" href="/User/Create">
+        + Thêm thành viên mới
+    </a>
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Tên đăng nhập</th>
+            <th>Họ và tên</th>
+            <th>Quyền hạn</th>
+            <th>Thao tác</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+
+                <td>@item.Username</td>
+
+                <td>@item.FullName</td>
+
+                <td>
+
+                    @if (item.Role == "Administrator")
+                    {
+                        <span class="role-admin">
+                            @item.Role
+                        </span>
+                    }
+
+                    else if (item.Role == "Editor")
+                    {
+                        <span class="role-editor">
+                            @item.Role
+                        </span>
+                    }
+
+                    else
+                    {
+                        <span class="role-author">
+                            @item.Role
+                        </span>
+                    }
+
+                </td>
+
+                <td>
+
+                    <a class="btn-edit"
+                       href="/User/Edit/@item.Id">
+                        Sửa
+                    </a>
+
+                    <a class="btn-delete"
+                       href="/User/Delete/@item.Id">
+                        Xóa
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - CMS.Backend</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/CMS.Backend.styles.css"
+          asp-append-version="true" />
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #f4f6f9;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #0f172a;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .logo {
+            color: white;
+            text-align: center;
+            padding: 25px 0;
+            font-size: 32px;
+            font-weight: bold;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 16px 25px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+            .sidebar a:hover {
+                background: #334155;
+            }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .footer {
+            margin-left: 250px;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- MENU BÊN TRÁI -->
+    <div class="sidebar">
+
+        <div class="logo">
+            CMS ADMIN
+        </div>
+
+        <a asp-controller="Home" asp-action="Index">
+            Dashboard
+        </a>
+
+        <a asp-controller="Post" asp-action="Index">
+            Quản lý bài viết
+        </a>
+
+        <a asp-controller="User" asp-action="Index">
+            Quản lý thành viên
+        </a>
+
+        <a asp-controller="CategoryProduct" asp-action="Index">
+            Quản lý danh mục SP
+        </a>
+
+        <a asp-controller="Product" asp-action="Index">
+            Quản lý sản phẩm
+        </a>
+
+        <a asp-controller="Customer" asp-action="Index">
+            Quản lý khách hàng
+        </a>
+
+        <a asp-controller="Order" asp-action="Index">
+            Quản lý đơn hàng
+        </a>
+
+        <a asp-controller="OrderDetail" asp-action="Index">
+            Chi tiết đơn hàng
+        </a>
+
+    </div>
+
+    <!-- NỘI DUNG -->
+    <div class="main-content">
+
+        <main role="main">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer text-muted">
+        <div class="container-fluid">
+            &copy; 2026 - CMS.Backend
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

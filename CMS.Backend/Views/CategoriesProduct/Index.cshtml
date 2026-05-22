@@ -1,0 +1,20 @@
+﻿@model List<CMS.Data.Entities.CategoryProduct>
+
+<h1>DANH SÁCH DANH MỤC SẢN PHẨM</h1>
+
+<table border="1" cellpadding="10">
+
+    <tr>
+        <th>ID</th>
+        <th>Tên danh mục</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+        </tr>
+    }
+
+</table>

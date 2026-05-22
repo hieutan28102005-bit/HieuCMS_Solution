@@ -1,0 +1,23 @@
+﻿@model CMS.Data.Entities.Post
+
+<h1>Sửa bài viết</h1>
+
+<form method="post">
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <p>Tiêu đề</p>
+    <input type="text" name="Title" value="@Model.Title" />
+
+    <p>Nội dung</p>
+    <input type="text" name="Content" value="@Model.Content" />
+
+    <p>Hình ảnh</p>
+    <input type="text" name="ImageUrl" value="@Model.ImageUrl" />
+
+    <br />
+    <br />
+
+    <button type="submit">Lưu</button>
+
+</form>

@@ -1,0 +1,29 @@
+﻿@model CMS.Data.Entities.User
+
+<h1>Sửa thành viên</h1>
+
+<form method="post">
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <p>Tên đăng nhập</p>
+    <input type="text"
+           name="Username"
+           value="@Model.Username" />
+
+    <p>Họ và tên</p>
+    <input type="text"
+           name="FullName"
+           value="@Model.FullName" />
+
+    <p>Quyền hạn</p>
+    <input type="text"
+           name="Role"
+           value="@Model.Role" />
+
+    <br />
+    <br />
+
+    <button type="submit">Lưu</button>
+
+</form>
