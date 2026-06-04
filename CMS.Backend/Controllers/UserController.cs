@@ -1,94 +1,73 @@
-﻿using CMS.Data.Entities;
+﻿using CMS.Data; // 👈 Cần để kết nối DB
+using CMS.Data.Entities;
+using Microsoft.AspNetCore.Authorization; // 👈 Thêm để bảo mật
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.Backend.Controllers
 {
+    [Authorize(Roles = "Administrator")]  // Chỉ Admin
     public class UserController : Controller
     {
-        static List<User> users = new List<User>()
+        private readonly ApplicationDbContext _context;
+
+        public UserController(ApplicationDbContext context)
         {
-            new User()
-            {
-                Id = 1,
-                Username = "admin_thai",
-                FullName = "Nguyễn Cao Thái",
-                Role = "Administrator"
-            },
+            _context = context;
+        }
 
-            new User()
-            {
-                Id = 2,
-                Username = "editor_01",
-                FullName = "Trần Văn Biên Tập",
-                Role = "Editor"
-            },
-
-            new User()
-            {
-                Id = 3,
-                Username = "author_minh",
-                FullName = "Lê Quang Minh",
-                Role = "Author"
-            }
-        };
-
-        // Hiển thị danh sách
+        // 1. Hiển thị danh sách từ Database
         public IActionResult Index()
         {
+            var users = _context.Users.ToList();
             return View(users);
         }
 
-        // GET: Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        // 2. GET: Create
+        public IActionResult Create() => View();
 
-        // POST: Create
+        // 3. POST: Create
         [HttpPost]
         public IActionResult Create(User user)
         {
-            user.Id = users.Max(x => x.Id) + 1;
-
-            users.Add(user);
-
-            return RedirectToAction("Index");
-        }
-
-        // GET: Edit
-        public IActionResult Edit(int id)
-        {
-            var user = users.FirstOrDefault(x => x.Id == id);
-
+            if (ModelState.IsValid)
+            {
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
             return View(user);
         }
 
-        // POST: Edit
+        // 4. GET: Edit
+        public IActionResult Edit(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user == null) return NotFound();
+            return View(user);
+        }
+
+        // 5. POST: Edit
         [HttpPost]
         public IActionResult Edit(User user)
         {
-            var oldUser = users.FirstOrDefault(x => x.Id == user.Id);
-
-            if (oldUser != null)
+            if (ModelState.IsValid)
             {
-                oldUser.Username = user.Username;
-                oldUser.FullName = user.FullName;
-                oldUser.Role = user.Role;
+                _context.Users.Update(user);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-
-            return RedirectToAction("Index");
+            return View(user);
         }
 
-        // Delete
+        // 6. Delete
         public IActionResult Delete(int id)
         {
-            var user = users.FirstOrDefault(x => x.Id == id);
-
+            var user = _context.Users.Find(id);
             if (user != null)
             {
-                users.Remove(user);
+                _context.Users.Remove(user);
+                _context.SaveChanges();
             }
-
             return RedirectToAction("Index");
         }
     }

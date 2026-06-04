@@ -1,0 +1,31 @@
+﻿@model CMS.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Xóa sản phẩm";
+}
+
+<div class="card-custom">
+    <h2><i class="fas fa-trash-alt text-danger"></i> Xác nhận xóa</h2>
+    <hr />
+
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-triangle"></i> Bạn có chắc chắn muốn xóa sản phẩm này?
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-2">Tên sản phẩm</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+
+        <dt class="col-sm-2">Giá</dt>
+        <dd class="col-sm-10">@String.Format("{0:N0} VNĐ", Model.Price)</dd>
+
+        <dt class="col-sm-2">Số lượng</dt>
+        <dd class="col-sm-10">@Model.StockQuantity</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Xóa</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>

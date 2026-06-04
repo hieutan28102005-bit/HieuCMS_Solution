@@ -1,143 +1,585 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>@ViewData["Title"] - CMS.Backend</title>
-
-    <link rel="stylesheet"
-          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    <link rel="stylesheet"
-          href="~/css/site.css"
-          asp-append-version="true" />
-
-    <link rel="stylesheet"
-          href="~/CMS.Backend.styles.css"
-          asp-append-version="true" />
-
+    <title>@ViewData["Title"] - CMS ADMIN</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
-
-        body {
+        * {
             margin: 0;
-            font-family: Arial;
-            background: #f4f6f9;
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f8;
+            overflow-x: hidden;
+        }
+
+        /* ========== SIDEBAR ========== */
         .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: #0f172a;
+            width: 280px;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
             position: fixed;
             left: 0;
             top: 0;
+            bottom: 0;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
         }
 
-        .logo {
-            color: white;
-            text-align: center;
-            padding: 25px 0;
-            font-size: 32px;
-            font-weight: bold;
-            border-bottom: 1px solid #334155;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 16px 25px;
-            font-size: 18px;
-            transition: 0.3s;
-        }
-
-            .sidebar a:hover {
-                background: #334155;
+            .sidebar.collapsed {
+                width: 85px;
             }
 
-        .main-content {
-            margin-left: 250px;
-            padding: 30px;
+                .sidebar.collapsed .logo span,
+                .sidebar.collapsed .menu-link span,
+                .sidebar.collapsed .user-box .user-name,
+                .sidebar.collapsed .user-box .user-role,
+                .sidebar.collapsed .menu-badge {
+                    display: none;
+                }
+
+                .sidebar.collapsed .menu-link i {
+                    margin-right: 0;
+                    font-size: 1.4rem;
+                }
+
+                .sidebar.collapsed .menu-link {
+                    text-align: center;
+                    padding: 14px 0;
+                    justify-content: center;
+                }
+
+                .sidebar.collapsed .user-box {
+                    text-align: center;
+                    padding: 20px 0;
+                }
+
+                .sidebar.collapsed .user-avatar {
+                    margin: 0 auto;
+                }
+
+        /* Logo */
+        .logo {
+            padding: 24px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
         }
 
-        .footer {
-            margin-left: 250px;
-            padding: 15px;
+            .logo i {
+                font-size: 2rem;
+                margin-right: 10px;
+                background: linear-gradient(135deg, #60a5fa, #a78bfa);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+        /* User Box */
+        .user-box {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .user-role {
+            font-size: 0.7rem;
+            opacity: 0.75;
+        }
+
+        /* Menu Links */
+        .menu-links {
+            padding: 20px 0;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            margin: 4px 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.25s;
+            gap: 14px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+            .menu-link:hover {
+                background: rgba(255, 255, 255, 0.08);
+                color: white;
+                transform: translateX(4px);
+            }
+
+            .menu-link.active {
+                background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+                color: white;
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            }
+
+            .menu-link i {
+                width: 24px;
+                font-size: 1.2rem;
+            }
+
+        .menu-badge {
+            margin-left: auto;
+            background: #ef4444;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
+        }
+
+        .sidebar.collapsed ~ .main-content,
+        .sidebar.collapsed + .main-content {
+            margin-left: 85px;
+        }
+
+        /* Topbar */
+        .topbar {
             background: white;
-            border-top: 1px solid #ddd;
+            padding: 14px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .toggle-btn {
+            background: #f1f5f9;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #1e293b;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .toggle-btn:hover {
+                background: #e2e8f0;
+                transform: scale(1.02);
+            }
+
+        /* Search Box */
+        .search-box {
+            background: #f1f5f9;
+            border-radius: 40px;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 300px;
+        }
+
+            .search-box i {
+                color: #94a3b8;
+            }
+
+            .search-box input {
+                border: none;
+                background: none;
+                outline: none;
+                width: 100%;
+                font-size: 0.9rem;
+            }
+
+        /* User Dropdown */
+        .user-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            background: #f1f5f9;
+            padding: 8px 18px;
+            border-radius: 40px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+            .user-dropdown:hover {
+                background: #e2e8f0;
+            }
+
+        .user-avatar-small {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .dropdown-menu-custom {
+            position: absolute;
+            right: 0;
+            top: 55px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            width: 220px;
+            display: none;
+            z-index: 1000;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+            .dropdown-menu-custom.show {
+                display: block;
+            }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #1e293b;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+            .dropdown-item:last-child {
+                border-bottom: none;
+            }
+
+            .dropdown-item:hover {
+                background: #f8fafc;
+            }
+
+            .dropdown-item i {
+                width: 20px;
+                color: #64748b;
+            }
+
+        /* Page Content */
+        .page-content {
+            padding: 28px 32px;
+        }
+
+        /* Card Custom */
+        .card-custom {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: all 0.2s;
+        }
+
+            .card-custom:hover {
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 14px rgba(59, 130, 246, 0.4);
+            }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Table */
+        .table {
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+            .table thead {
+                background: #f8fafc;
+            }
+
+            .table th {
+                font-weight: 600;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-bottom: 2px solid #e2e8f0;
+            }
+
+        /* Alert */
+        .alert {
+            border-radius: 12px;
+            border: none;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+                .sidebar.show {
+                    transform: translateX(0);
+                    width: 280px;
+                }
+
+                .sidebar.collapsed {
+                    transform: translateX(-100%);
+                }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            .page-content {
+                padding: 16px;
+            }
+
+            .search-box {
+                display: none;
+            }
         }
     </style>
-
 </head>
-
 <body>
 
-    <!-- MENU BÊN TRÁI -->
-    <div class="sidebar">
-
+    <div class="sidebar" id="sidebar">
         <div class="logo">
-            CMS ADMIN
+            <i class="fas fa-crown"></i> <span>CMS Pro</span>
         </div>
 
-        <a asp-controller="Home" asp-action="Index">
-            Dashboard
-        </a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="user-box">
+                <div class="d-flex align-items-center">
+                    <div class="user-avatar">
+                        @(User.Identity.Name?.Substring(0, 1).ToUpper())
+                    </div>
+                    <div style="flex: 1">
+                        <div class="user-name">@User.Identity.Name</div>
+                       <div class="user-role">
+    @if (User.IsInRole("Administrator"))
+    {
+        <i class="fas fa-shield-alt"></i> <span>Quản trị viên</span>
+    }
+    else if (User.IsInRole("Editor"))
+    {
+        <i class="fas fa-edit"></i> <span>Biên tập viên</span>
+    }
+    else
+    {
+        <i class="fas fa-user"></i> <span>Thành viên</span>
+    }
+</div>
+                    </div>
+                </div>
+            </div>
+        }
 
-        <a asp-controller="Post" asp-action="Index">
-            Quản lý bài viết
-        </a>
-
-        <a asp-controller="User" asp-action="Index">
-            Quản lý thành viên
-        </a>
-
-        <a asp-controller="CategoryProduct" asp-action="Index">
-            Quản lý danh mục SP
-        </a>
-
-        <a asp-controller="Product" asp-action="Index">
-            Quản lý sản phẩm
-        </a>
-
-        <a asp-controller="Customer" asp-action="Index">
-            Quản lý khách hàng
-        </a>
-
-        <a asp-controller="Order" asp-action="Index">
-            Quản lý đơn hàng
-        </a>
-
-        <a asp-controller="OrderDetail" asp-action="Index">
-            Chi tiết đơn hàng
-        </a>
-
-    </div>
-
-    <!-- NỘI DUNG -->
-    <div class="main-content">
-
-        <main role="main">
-            @RenderBody()
-        </main>
-
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="footer text-muted">
-        <div class="container-fluid">
-            &copy; 2026 - CMS.Backend
+        <div class="menu-links">
+            <a class="menu-link" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
+            </a>
+            <a class="menu-link" asp-controller="Post" asp-action="Index">
+                <i class="fas fa-newspaper"></i> <span>Bài viết</span>
+            </a>
+            <a class="menu-link" asp-controller="Category" asp-action="Index">
+                <i class="fas fa-folder-tree"></i> <span>Danh mục bài viết</span>
+            </a>
+            @if (User.IsInRole("Administrator"))
+            {
+                <a class="menu-link" asp-controller="User" asp-action="Index">
+                    <i class="fas fa-users"></i> <span>Thành viên</span>
+                </a>
+            }
+            <a class="menu-link" asp-controller="CategoryProduct" asp-action="Index">
+                <i class="fas fa-tags"></i> <span>Danh mục SP</span>
+            </a>
+            <a class="menu-link" asp-controller="Product" asp-action="Index">
+                <i class="fas fa-box"></i> <span>Sản phẩm</span>
+            </a>
+            @if (User.IsInRole("Administrator"))
+            {
+                <a class="menu-link" asp-controller="Customer" asp-action="Index">
+                    <i class="fas fa-users"></i> <span>Khách hàng</span>
+                </a>
+            }
+            <a class="menu-link" asp-controller="Order" asp-action="Index">
+                <i class="fas fa-shopping-cart"></i> <span>Đơn hàng</span>
+            </a>
+            <a class="menu-link" asp-controller="OrderDetail" asp-action="Index">
+                <i class="fas fa-receipt"></i> <span>Chi tiết đơn</span>
+            </a>
         </div>
-    </footer>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="topbar">
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Tìm kiếm menu..." id="searchInput">
+            </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="user-avatar-small">
+                        @(User.Identity.Name?.Substring(0, 1).ToUpper())
+                    </div>
+                    <span style="font-weight: 500;">@User.Identity.Name</span>
+                    <i class="fas fa-chevron-down" style="font-size: 12px;"></i>
+                    <div class="dropdown-menu-custom" id="dropdownMenu">
+                        <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
+                            <i class="fas fa-user-circle"></i> Hồ sơ
+                        </a>
+                        <div style="height: 1px; background: #e2e8f0; margin: 8px 0;"></div>
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Logout" style="color: #ef4444;">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="page-content">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle sidebar
+        $('#toggleSidebar').click(function() {
+            $('#sidebar').toggleClass('collapsed');
+        });
 
-    <script src="~/js/site.js"
-            asp-append-version="true"></script>
+        // Toggle user dropdown
+        $('#userDropdown').click(function(e) {
+            e.stopPropagation();
+            $('#dropdownMenu').toggleClass('show');
+        });
+
+        $(document).click(function() {
+            $('#dropdownMenu').removeClass('show');
+        });
+
+        // Responsive: mở sidebar khi bấm nếu đang mobile
+        $(window).resize(function() {
+            if ($(window).width() > 768) {
+                $('#sidebar').removeClass('show');
+            }
+        });
+
+        $('#toggleSidebar').on('click', function(e) {
+            if ($(window).width() <= 768) {
+                $('#sidebar').toggleClass('show');
+            }
+        });
+
+        // Search functionality
+        $('#searchInput').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $('.menu-link').each(function() {
+                var text = $(this).text().toLowerCase();
+                if (text.indexOf(value) > -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 </html>

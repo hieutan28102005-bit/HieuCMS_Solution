@@ -1,23 +1,98 @@
 ﻿@model List<CMS.Data.Entities.OrderDetail>
 
-<h1>DANH SÁCH CHI TIẾT ĐƠN HÀNG</h1>
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
 
-<table border="1" cellpadding="10">
+<div class="card-custom">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2><i class="fas fa-receipt"></i> Danh sách chi tiết đơn hàng</h2>
+    </div>
 
-    <tr>
-        <th>ID</th>
-        <th>Số lượng</th>
-    </tr>
-
-    @foreach (var item in Model)
+    @if (TempData["Success"] != null)
     {
-        <tr>
-
-            <td>@item.Id</td>
-
-            <td>@item.Quantity</td>
-
-        </tr>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
     }
 
-</table>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Mã đơn hàng</th>
+                    <th>Sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <th>Thao tác</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.OrderId</td>
+                        <td>@(item.Product?.Name ?? "N/A")</td>
+                        <td>@String.Format("{0:N0} VNĐ", item.UnitPrice)</td>
+                        <td>@item.Quantity</td>
+                        <td class="text-danger fw-bold">@String.Format("{0:N0} VNĐ", item.UnitPrice * item.Quantity)</td>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm" title="Xóa"
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                        data-id="@item.Id" data-name="Chi tiết đơn #@item.Id">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal xác nhận xóa -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Xác nhận xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa <strong id="detailName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" name="id" id="deleteId" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const id = button.getAttribute('data-id');
+                const name = button.getAttribute('data-name');
+                document.getElementById('detailName').textContent = name;
+                document.getElementById('deleteId').value = id;
+            });
+        }
+    </script>
+}

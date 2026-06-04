@@ -1,0 +1,55 @@
+﻿@model CMS.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm";
+}
+
+<div class="card-custom">
+    <h2><i class="fas fa-plus-circle"></i> Thêm sản phẩm mới</h2>
+    <hr />
+
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label">Giá (VNĐ)</label>
+            <input asp-for="Price" type="number" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Hình ảnh sản phẩm</label>
+            <input type="file" name="ImageFile" class="form-control" accept="image/*" />
+            <small class="text-muted">Chọn file ảnh (jpg, png, jpeg, gif)</small>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="StockQuantity" class="form-label">Số lượng tồn kho</label>
+            <input asp-for="StockQuantity" type="number" class="form-control" value="0" />
+            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu</button>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

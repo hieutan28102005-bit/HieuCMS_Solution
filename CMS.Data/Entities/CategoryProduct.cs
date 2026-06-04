@@ -1,18 +1,6 @@
-﻿/*
- * Sinh Viên: Nguyễn Tấn Hiệu
- * Mã sv:2123110465
- * Ngày Tạo: 16-05-2026
- * Mô Tả : Mô tả các thực thể bài viết 
- */
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 namespace CMS.Data.Entities
 {
     public class CategoryProduct
@@ -21,12 +9,9 @@ namespace CMS.Data.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Tên danh mục không được để trống")]
-        [StringLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public string? Description { get; set; }
-
-        // Quan hệ: Một danh mục có nhiều sản phẩm
+        // Liên kết 1 - Nhiều tới bảng Product của bạn
         public virtual ICollection<Product>? Products { get; set; }
     }
 }

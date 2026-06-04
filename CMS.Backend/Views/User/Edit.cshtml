@@ -1,29 +1,42 @@
 ﻿@model CMS.Data.Entities.User
 
-<h1>Sửa thành viên</h1>
+@{
+    ViewData["Title"] = "Sửa thành viên";
+}
 
-<form method="post">
+<div class="container mt-4">
+    <div class="card shadow-sm" style="max-width: 600px; margin: auto;">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Chỉnh sửa thông tin thành viên</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" name="Id" value="@Model.Id" />
 
-    <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tên đăng nhập</label>
+                    <input type="text" name="Username" class="form-control" value="@Model.Username" required />
+                </div>
 
-    <p>Tên đăng nhập</p>
-    <input type="text"
-           name="Username"
-           value="@Model.Username" />
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Họ và tên</label>
+                    <input type="text" name="FullName" class="form-control" value="@Model.FullName" required />
+                </div>
 
-    <p>Họ và tên</p>
-    <input type="text"
-           name="FullName"
-           value="@Model.FullName" />
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Quyền hạn</label>
+                    <select name="Role" class="form-select" required>
+                        <option value="Administrator" selected="@(Model.Role == "Administrator")">Administrator</option>
+                        <option value="Editor" selected="@(Model.Role == "Editor")">Editor</option>
+                        <option value="Author" selected="@(Model.Role == "Author")">Author</option>
+                    </select>
+                </div>
 
-    <p>Quyền hạn</p>
-    <input type="text"
-           name="Role"
-           value="@Model.Role" />
-
-    <br />
-    <br />
-
-    <button type="submit">Lưu</button>
-
-</form>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
+                    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

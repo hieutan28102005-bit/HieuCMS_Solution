@@ -1,0 +1,23 @@
+﻿@model CMS.Data.Entities.CategoryProduct
+
+<div class="container mt-4" style="font-family: Arial, sans-serif;">
+    <h1 class="mb-3" style="color: #333; font-weight: bold;">THÊM DANH MỤC MỚI</h1>
+
+    <div style="max-width: 500px; padding: 25px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background-color: #fff;">
+        <form action="/CategoryProduct/Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #444;">Tên danh mục:</label>
+                <input type="text" name="Name" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;" placeholder="Nhập tên danh mục..." />
+            </div>
+
+            <div style="margin-top: 25px; display: flex; align-items: center;">
+                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px; font-weight: bold; color: white; border-radius: 4px; cursor: pointer; margin-right: 15px;">
+                    Lưu lại
+                </button>
+                <a href="/CategoryProduct" style="color: #6c757d; text-decoration: none; font-size: 14px;">Quay lại danh sách</a>
+            </div>
+        </form>
+    </div>
+</div>

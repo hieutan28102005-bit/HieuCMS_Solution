@@ -1,165 +1,119 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title>CMS Dashboard</title>
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
 
-    <style>
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-chart-line text-primary"></i> HỆ THỐNG QUẢN TRỊ CMS
+        </h1>
+    </div>
+</div>
 
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: #f5f5f5;
-        }
+<!-- Cards thống kê -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card-custom">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted text-uppercase small">BÀI VIẾT</span>
+                    <h2 class="mt-2 mb-0">@ViewBag.PostCount</h2>
+                </div>
+                <div class="bg-primary bg-opacity-10 p-3 rounded">
+                    <i class="fas fa-newspaper fa-2x text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        .sidebar {
-            width: 230px;
-            height: 100vh;
-            background: #1e293b;
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding-top: 20px;
-        }
+    <div class="col-md-3">
+        <div class="card-custom">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted text-uppercase small">THÀNH VIÊN</span>
+                    <h2 class="mt-2 mb-0">@ViewBag.UserCount</h2>
+                </div>
+                <div class="bg-success bg-opacity-10 p-3 rounded">
+                    <i class="fas fa-users fa-2x text-success"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            .sidebar h2 {
-                color: white;
-                text-align: center;
-                margin-bottom: 30px;
-            }
+    <div class="col-md-3">
+        <div class="card-custom">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted text-uppercase small">SẢN PHẨM</span>
+                    <h2 class="mt-2 mb-0">@ViewBag.ProductCount</h2>
+                </div>
+                <div class="bg-warning bg-opacity-10 p-3 rounded">
+                    <i class="fas fa-box fa-2x text-warning"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            .sidebar a {
-                display: block;
-                color: white;
-                padding: 15px 20px;
-                text-decoration: none;
-                transition: 0.3s;
-            }
+    <div class="col-md-3">
+        <div class="card-custom">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted text-uppercase small">ĐƠN HÀNG</span>
+                    <h2 class="mt-2 mb-0">@ViewBag.OrderCount</h2>
+                </div>
+                <div class="bg-danger bg-opacity-10 p-3 rounded">
+                    <i class="fas fa-shopping-cart fa-2x text-danger"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                .sidebar a:hover {
-                    background: #334155;
+<!-- Welcome Card -->
+<div class="card-custom">
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0">
+            <div class="bg-gradient-primary p-3 rounded-circle" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">
+                <i class="fas fa-user-circle fa-3x text-white"></i>
+            </div>
+        </div>
+        <div class="flex-grow-1 ms-4">
+            <h2 class="mb-1">Xin chào <span class="text-primary">@(User.Identity?.Name ?? "Khách")</span> 👋</h2>
+            <p class="text-muted mb-0">Chào mừng bạn đến với hệ thống quản trị nội dung CMS Pro.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activities -->
+<div class="card-custom mt-4">
+    <h4><i class="fas fa-history"></i> Bài viết mới nhất</h4>
+    <hr />
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Tiêu đề</th>
+                    <th>Ngày tạo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.RecentPosts != null && ViewBag.RecentPosts.Count > 0)
+                {
+                    @foreach (var post in ViewBag.RecentPosts)
+                    {
+                        <tr>
+                            <td>@post.Title</td
+                            <td>@(post.CreatedDate.ToString("dd/MM/yyyy HH:mm"))</td
+                        </tr>
+                    }
                 }
-
-        .main {
-            margin-left: 230px;
-            padding: 30px;
-        }
-
-        .title {
-            font-size: 32px;
-            margin-bottom: 25px;
-            color: #333;
-        }
-
-        .cards {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            background: white;
-            width: 220px;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-        }
-
-            .card h3 {
-                margin: 0;
-                color: #555;
-            }
-
-            .card p {
-                font-size: 28px;
-                margin-top: 15px;
-                color: #007bff;
-                font-weight: bold;
-            }
-
-        .welcome {
-            background: white;
-            margin-top: 30px;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-        }
-    </style>
-
-</head>
-
-<body>
-
-    <div class="sidebar">
-
-        <h2>CMS ADMIN</h2>
-
-        <a href="/Home">
-            Dashboard
-        </a>
-
-        <a href="/Post">
-            Quản lý bài viết
-        </a>
-
-        <a href="/User">
-            Quản lý thành viên
-        </a>
-
-        <a href="/Product">
-            Quản lý sản phẩm
-        </a>
-
-        <a href="/Customer">
-            Quản lý khách hàng
-        </a>
-
-        <a href="/Order">
-            Quản lý đơn hàng
-        </a>
-
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center text-muted">Chưa có bài viết nào</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-
-    <div class="main">
-
-        <div class="title">
-            HỆ THỐNG QUẢN TRỊ CMS
-        </div>
-
-        <div class="cards">
-
-            <div class="card">
-                <h3>Bài viết</h3>
-                <p>25</p>
-            </div>
-
-            <div class="card">
-                <h3>Thành viên</h3>
-                <p>12</p>
-            </div>
-
-            <div class="card">
-                <h3>Sản phẩm</h3>
-                <p>50</p>
-            </div>
-
-            <div class="card">
-                <h3>Đơn hàng</h3>
-                <p>18</p>
-            </div>
-
-        </div>
-
-        <div class="welcome">
-
-            <h2>Xin chào Nguyễn Tấn Hiệu 👋</h2>
-
-            <p>
-                Chào mừng bạn đến với hệ thống quản trị nội dung CMS.
-            </p>
-
-        </div>
-
-    </div>
-
-</body>
-</html>
+</div>

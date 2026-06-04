@@ -1,0 +1,58 @@
+﻿@model CMS.Data.Entities.Order
+
+@{
+    ViewData["Title"] = "Sửa đơn hàng";
+}
+
+<div class="card-custom">
+    <div class="d-flex align-items-center mb-4">
+        <a asp-action="Index" class="btn btn-outline-secondary me-3">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+        <div>
+            <h2 class="text-warning mb-0">
+                <i class="fas fa-edit"></i> Sửa đơn hàng #@Model.Id
+            </h2>
+            <p class="text-muted mt-1">Cập nhật trạng thái và ghi chú đơn hàng</p>
+        </div>
+    </div>
+
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Status" class="form-label fw-bold">Trạng thái đơn hàng</label>
+                <select asp-for="Status" class="form-select">
+                    <option value="0">Chờ duyệt</option>
+                    <option value="1">Đang giao</option>
+                    <option value="2">Đã giao</option>
+                    <option value="3">Đã hủy</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label asp-for="Notes" class="form-label fw-bold">Ghi chú</label>
+                <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Nhập ghi chú cho đơn hàng..."></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Lưu thay đổi
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Hủy
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

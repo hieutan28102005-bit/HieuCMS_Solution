@@ -1,0 +1,31 @@
+@model CMS.Data.Entities.Category
+
+@{
+    ViewData["Title"] = "Xóa danh mục";
+}
+
+<div class="card-custom">
+    <div class="text-center mb-4">
+        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+        <h2 class="text-danger mt-2">Xác nhận xóa</h2>
+        <p class="text-muted">Bạn có chắc chắn muốn xóa danh mục này?</p>
+    </div>
+
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>@Model.Name</strong>
+        <p class="mb-0 mt-1 small">Lưu ý: Các bài viết thuộc danh mục này sẽ bị ảnh hưởng!</p>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="text-center">
+            <button type="submit" class="btn btn-danger px-4">
+                <i class="fas fa-trash"></i> Xóa
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary ms-2">
+                <i class="fas fa-times"></i> Hủy
+            </a>
+        </div>
+    </form>
+</div>

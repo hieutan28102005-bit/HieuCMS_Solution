@@ -1,21 +1,46 @@
 ﻿@model CMS.Data.Entities.User
 
-<h1>Thêm thành viên</h1>
+@{
+    ViewData["Title"] = "Thêm thành viên";
+}
 
-<form method="post">
+<div class="container mt-4">
+    <div class="card shadow-sm" style="max-width: 600px; margin: auto;">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Thêm thành viên mới</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tên đăng nhập</label>
+                    <input type="text" name="Username" class="form-control" required placeholder="Nhập username..." />
+                </div>
 
-    <p>Tên đăng nhập</p>
-    <input type="text" name="Username" />
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Họ và tên</label>
+                    <input type="text" name="FullName" class="form-control" required placeholder="Nhập họ tên..." />
+                </div>
 
-    <p>Họ và tên</p>
-    <input type="text" name="FullName" />
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Mật khẩu</label>
+                    <input type="password" name="PasswordHash" class="form-control" required placeholder="Nhập mật khẩu..." />
+                    <small class="text-muted">Lưu ý: Mật khẩu sẽ được lưu vào hệ thống.</small>
+                </div>
 
-    <p>Quyền hạn</p>
-    <input type="text" name="Role" />
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Quyền hạn</label>
+                    <select name="Role" class="form-select" required>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Author">Author</option>
+                    </select>
+                </div>
 
-    <br />
-    <br />
-
-    <button type="submit">Thêm</button>
-
-</form>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Thêm thành viên</button>
+                    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

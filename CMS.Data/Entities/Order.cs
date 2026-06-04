@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,9 +14,12 @@ namespace CMS.Data.Entities
 
         public int CustomerId { get; set; }
 
-        public int Status { get; set; } // 0: Chờ duyệt, 1: Đang giao, 2: Đã xong
+        public int Status { get; set; } // 0: Chờ duyệt, 1: Đang giao, 2: Đã xong, 3: Đã hủy
 
         public string? Notes { get; set; }
+
+        // Thêm thuộc tính TotalAmount
+        public decimal TotalAmount { get; set; }
 
         [ForeignKey("CustomerId")]
         public virtual Customer? Customer { get; set; }

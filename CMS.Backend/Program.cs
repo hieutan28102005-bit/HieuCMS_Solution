@@ -1,5 +1,6 @@
 ﻿using CMS.Data;
 using CMS.Data.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies; // 👈 THÊM THƯ VIỆN NÀY
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,100 +11,41 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-// Add services to the container.
+// ==========================================
+// 1. ĐĂNG KÝ DỊCH VỤ COOKIE AUTHENTICATION (THÊM ĐOẠN NÀY)
+// ==========================================
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";               // Nếu chưa đăng nhập, tự động đá về đây
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Nếu sai quyền (Vd: Editor vào vùng Admin) thì đá về đây
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);   // Cookie hết hạn sau 30 phút
+    });
+
 builder.Services.AddControllersWithViews();
+
+// Configure Authorize (thêm Policy tùy chọn - hiện dùng Roles trực tiếp)
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-
 // ==================
-// TẠO DỮ LIỆU MẪU
+// TẠO DỮ LIỆU MẪU (SEED DATA) - dùng 1 file SeedData
 // ==================
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider
-        .GetRequiredService<ApplicationDbContext>();
-
-    db.Database.EnsureCreated();
-
-    // Category
-    if (!db.Categories.Any())
-    {
-        db.Categories.AddRange(
-
-            new Category
-            {
-                Name = "Lập trình",
-                Description = "Danh mục lập trình"
-            },
-
-            new Category
-            {
-                Name = "Thiết kế",
-                Description = "Danh mục thiết kế"
-            }
-        );
-
-        db.SaveChanges();
-    }
-
-    // User
-    if (!db.Users.Any())
-    {
-        db.Users.AddRange(
-
-            new User
-            {
-                Username = "admin",
-                PasswordHash = "123456",
-                FullName = "Nguyễn Tấn Hiệu",
-                Role = "Administrator"
-            },
-
-            new User
-            {
-                Username = "editor01",
-                PasswordHash = "123456",
-                FullName = "Biên tập viên",
-                Role = "Editor"
-            }
-        );
-
-        db.SaveChanges();
-    }
-
-    // Post
-    if (!db.Posts.Any())
-    {
-        db.Posts.AddRange(
-
-            new Post
-            {
-                Title = "Học ASP.NET Core",
-                Content = "Nội dung ASP.NET Core",
-                ImageUrl = "image1.jpg",
-                CategoryId = 1
-            },
-
-            new Post
-            {
-                Title = "Học ReactJS",
-                Content = "Nội dung ReactJS",
-                ImageUrl = "image2.jpg",
-                CategoryId = 1
-            }
-        );
-
-        db.SaveChanges();
-    }
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    CMS.Data.Seed.SeedData.EnsureSeeded(db);
 }
+
+
+
 
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-
     app.UseHsts();
 }
 
@@ -113,7 +55,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+// ==========================================
+// 2. KÍCH HOẠT MIDDLEWARE PHÂN QUYỀN (SỬA LẠI ĐÚNG THỨ TỰ)
+// ==========================================
+app.UseAuthentication(); // 👈 PHẢI ĐỨNG TRƯỚC (Xác minh xem ông là ai?)
+app.UseAuthorization();  // 👈 PHẢI ĐỨNG SAU (Kiểm tra xem ông có quyền vào không?)
 
 app.MapControllerRoute(
     name: "default",

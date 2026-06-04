@@ -1,26 +1,96 @@
 ﻿@model List<CMS.Data.Entities.Customer>
 
-<h1>DANH SÁCH KHÁCH HÀNG</h1>
+@{
+    ViewData["Title"] = "Quản lý khách hàng";
+}
 
-<table border="1" cellpadding="10">
+<div class="card-custom">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2><i class="fas fa-users"></i> Danh sách khách hàng</h2>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm mới
+        </a>
+    </div>
 
-    <tr>
-        <th>ID</th>
-        <th>Họ tên</th>
-        <th>Email</th>
-    </tr>
-
-    @foreach (var item in Model)
+    @if (TempData["Success"] != null)
     {
-        <tr>
-
-            <td>@item.Id</td>
-
-            <td>@item.FullName</td>
-
-            <td>@item.Email</td>
-
-        </tr>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
     }
 
-</table>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.FullName</td>
+                        <td>@item.Email</td>
+                        <td>@(string.IsNullOrEmpty(item.Phone) ? "Chưa có" : item.Phone)</td>
+                        <td>@(string.IsNullOrEmpty(item.Address) ? "Chưa có" : item.Address)</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id" data-name="@item.FullName">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal xác nhận xóa -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Xác nhận xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa khách hàng <strong id="customerName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post" asp-action="Delete">
+                    <input type="hidden" name="id" id="deleteId" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Xử lý modal xóa
+        const deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const id = button.getAttribute('data-id');
+                const name = button.getAttribute('data-name');
+
+                document.getElementById('customerName').textContent = name;
+                document.getElementById('deleteId').value = id;
+            });
+        }
+    </script>
+}
