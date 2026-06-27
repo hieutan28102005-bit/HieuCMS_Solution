@@ -31,7 +31,7 @@ Hệ thống được chia thành 2 phần chính:
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt Và Chạy Dự Án
+##  Hướng Dẫn Cài Đặt Và Chạy Dự Án
 
 ### Yêu cầu hệ thống
 - .NET 8 SDK
